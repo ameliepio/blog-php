@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8" />
-          <link rel="stylesheet" href="main.css">
+        <!-- <meta charset="utf-8" /> -->
+          <!-- <link rel="stylesheet" href="main.css"> -->
         <title>blog</title>
+         <link href="style.css" rel="stylesheet" />
     </head>
 
 
-
-
-      <li><a href="commentaires.php?billet=<?php echo $donnees ["ID"]?>">commentaires</a></>
-
     <body>
+      <h1>Mon super blog !</h1>
+       <p>Derniers billets du blog :</p>
+
 
 
 <?php
@@ -28,22 +28,31 @@ catch(Exception $e)
 {
         die('Erreur : '.$e->getMessage());
 }
+// récupération
 
 // récupération des messages
-  $reponse=$bdd->query('SELECT * FROM billets ORDER BY ID LIMIT 5 ');
+  $reponse=$bdd->query('SELECT * FROM billets');
 
 
-  // afficher message
+  // afficher messagel
 
     while($donnees=$reponse->fetch()) {
 
-    echo '<p>' .htmlspecialchars($donnees['ID']) .'-'. htmlspecialchars($donnees['TITRE']) .'-'. htmlspecialchars($donnees['CONTENU']).'-'. htmlspecialchars($donnees['DATE DE CREATION']) . '</p>';
- ?>
- <li><a href="commentaires.php?billet=<?php echo $donnees ["ID"]?>">commentaires</a></>
+
+?>
+
+<div class="news">
+  <h3>
+
+<?php  echo '<p>' .htmlspecialchars($donnees['id']) .'-'. htmlspecialchars($donnees['titre']) .'-'. htmlspecialchars($donnees['contenu']).'-'. htmlspecialchars($donnees['date_creation']) . '</p>';?>
+  <em> <?php echo '<li><a href="commentaires.php?billet=<?php echo $donnees ["id"]?>commentaires</a></>';?></em>
+
+</h3>
+</div>
 
 <?php
-  }
- ?>
+}
+?>
 
 </body>
 
