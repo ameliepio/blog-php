@@ -10,15 +10,14 @@
 <h1> Mon blog</h1>
 
 
-      <li><a href="index.php">retour a la liste des billets</a></>
+      <li><a href="index.php">retour a la liste des billets</a>
 
 <?php
 
-// Effectuer ici la requête qui insère le message
 try
 
 {
-  $bdd = new PDO('mysql:host=localhost;dbname=billet','root', 'root');
+  $bdd = new PDO('mysql:host=localhost;dbname=ticket','root', 'root', array(PDO::ATTR_ERRMODE =>PDO::ERRMODE_EXCEPTION));
 
 }
 catch(Exception $e)
@@ -28,20 +27,22 @@ catch(Exception $e)
 }
 
 // Récupération du billet
-  $req=$bdd->prepare('SELECT * FROM billets WHERE id=? ');
-  $req->execute(array($_GET['billet']));
-  $donnees=$req->fetch();
+$req = $bdd->prepare('SELECT id,titre,contenu,date_de_creation FROM billets WHERE id=?');
+$req->execute(array($_GET['billets']));
+$donnees=$req->fetch();
 
 
 
 ?>
-
-
 <div class="news">
+<h3>
 
-    <h3>
+<?php
 
-<?php  echo '<p>' .($donnees['id']) .'-'. htmlspecialchars($donnees['titre']) .'-'. htmlspecialchars($donnees['contenu']).'-'. htmlspecialchars($donnees['date_creation']) . '</p>';?>
+	echo $donnees['contenu'];
+
+?>
+
 </h3>
 
 </div>
@@ -49,25 +50,26 @@ catch(Exception $e)
 <h2>commentaires</h2>
 <?php
 
-$req->closeCursor();
+// $req->closeCursor();
 
 
 // récupération des commentaires
-$req=$bdd->prepare('SELECT * FROM commentaires WHERE id_billet= ?');
-$req->execute(array($_GET['billet']));
+$req=$bdd->prepare('SELECT * FROM commentaire WHERE id_billet= ?');
+$req->execute(array($_GET['billets']));
 
   // afficher message
 
 while ($donnees = $req->fetch()) {
 
-?>
-<?php
-    echo '<p>' .htmlspecialchars($donnees['id_billet']) .'-'. htmlspecialchars($donnees['id_billet']) .'-'. htmlspecialchars($donnees['auteur']).'-'. htmlspecialchars($donnees['commentaires']) . '</p>';
+
+    echo (($donnees['id_billet']).($donnees['id']).($donnees['auteur']).($donnees['commentaireS']));
+
+
  ?>
  <?php
 
 }
-$req->closeCursor();
+
 
  ?>
 
